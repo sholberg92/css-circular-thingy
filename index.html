@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link type="text/css" rel="stylesheet" href="style.css">
+	<script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+</head>
+<body>
+
+<div class="circle">
+	
+</div>
+
+<div class="controls">
+
+	<div>
+		<button id="auto">Auto</button>
+		<label for="interval">Interval (ms)</label>
+		<input type="number" value="2000" id="interval">
+		<label for="angle">Angle (degrees)</label>
+		<input type="number" value="30" id="angle">
+	</div>
+	<button id="stop">Stop</button>
+	<button id="add">Add</button>
+	<button id="reset">Reset</button>
+	
+</div>
+
+
+
+
+<script>
+var num_lines = 0;
+function moveDot(el) {
+	if(el.find(".dot").hasClass("dot-left")) {
+		el.find(".dot").removeClass("dot-left");
+		el.find(".dot").addClass("dot-right");
+	} else if(el.find(".dot").hasClass("dot-right")) {
+		el.find(".dot").removeClass("dot-right");
+		el.find(".dot").addClass("dot-left");
+	}
+	
+		
+};
+
+$("#add").click(function() {
+	addLine();
+});
+
+$("#auto").click(function() {
+	setTimeout(function() {
+		addLine();
+	}, 0);
+	var interval = setInterval(function() {
+		addLine();
+		$("#stop").click(function() {
+			clearInterval(interval);
+		});
+	}, $("#interval").val());
+})
+
+
+function addLine() {
+	var el = $('<div class="line" id=' + num_lines + '><div class="dot dot-left"></div></div>');
+	$('.circle').append(el);
+	var rotate_by = num_lines * $("#angle").val();
+	el.css("transform", "rotate("+rotate_by+"deg)");
+	setTimeout(function() { //ensure DOM is updated before performing transition
+		moveDot(el);
+	}, 10);
+	setInterval(function() {
+		moveDot(el);
+	}, 1000);
+	num_lines++;	
+}
+
+
+
+$("#reset").click(function() {
+	$(".circle").empty();
+	num_lines = 0;
+
+
+});
+
+
+</script>
+
+
+</body>
+</html>
