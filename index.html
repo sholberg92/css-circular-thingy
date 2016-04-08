@@ -17,7 +17,7 @@
 	<div>
 		<button id="auto">Auto</button>
 		<label for="interval">Interval (ms)</label>
-		<input type="number" value="2000" id="interval">
+		<input type="number" value="1842" id="interval">
 		<label for="angle">Angle (degrees)</label>
 		<input type="number" value="30" id="angle">
 	</div>
@@ -49,11 +49,19 @@ $("#add").click(function() {
 });
 
 $("#auto").click(function() {
+	var numberOfTimes = 180 / $("#angle").val();
+	var numberOfLinesAdded = 0;
 	setTimeout(function() {
 		addLine();
+		numberOfLinesAdded++;
 	}, 0);
+	
 	var interval = setInterval(function() {
 		addLine();
+		numberOfLinesAdded++;
+		if(numberOfLinesAdded >= numberOfTimes) {
+			clearInterval(interval);
+		}
 		$("#stop").click(function() {
 			clearInterval(interval);
 		});
